@@ -139,7 +139,7 @@ def receiveData(sock, expectedMessageType):
 
 localUsername = "Marcus"
 
-responseMessage = str(input("Please enter a message to respond with (optional): "))
+responseMessage = str(input("Please enter a reponse message to respond to any greetings with (optional): "))
 # Sets a default response message if user chooses to not enter a response message
 # it will use this message if not.
 if (responseMessage == ""):
