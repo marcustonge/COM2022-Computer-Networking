@@ -51,7 +51,7 @@ def sendData(sock, jsonData):
         data, server = sock.recvfrom(BUFFER_SIZE)
         x = json.loads(data)
         msgType = x.get("type")
-    # Checks if the received packet has a checksum as it was optional for this implementation
+    # Checks if the received packet has a checksum or it raiises exception
     # if the checksums do not match then it will raise an exception
         if (x.get("checksum") is not None):
             if (checksum_calculator(x) != int(x.get("checksum"))):
@@ -59,6 +59,9 @@ def sendData(sock, jsonData):
                 raise Exception()
             else:
                 print("Checksum on ACK matches")
+        else:
+            print("No checksum attached to the data, awaiting the data to be re-sent")
+            raise Exception()
 
     # if an acknowledgement message is received then we know the data reached the recipient correctly
         if (msgType == "ack"):
@@ -86,6 +89,9 @@ def receiveData(sock, expectedMessageType):
             raise Exception()
         else:
             print("Checksums match")
+    else:
+        print("No checksum attached to the data, awaiting the data to be re-sent")
+        raise Exception()
 
     msgType = x.get("type")
 
