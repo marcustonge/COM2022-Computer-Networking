@@ -59,6 +59,9 @@ def sendData(sock, jsonData):
             raise Exception()
         else:
             print("Checksum on ACK matches")
+    else:
+        print("No checksum attached to the data, awaiting the data to be re-sent")
+        raise Exception()
 
     # if an acknowledgement message is received then we know the data reached the recipient correctly
     if (msgType == "ack"):
@@ -86,6 +89,9 @@ def receiveData(sock, expectedMessageType):
             raise Exception()
         else:
             print("Checksums match")
+    else:
+        print("No checksum attached to the data, awaiting the data to be re-sent")
+        raise Exception()
 
     msgType = x.get("type")
 
@@ -98,9 +104,6 @@ def receiveData(sock, expectedMessageType):
     elif (msgType == "sender_public_key"):
         global senderKey
         senderKey = rsa.PublicKey.load_pkcs1(x.get("content").encode())
-
-
-
 
 
     elif (msgType == "message"):
@@ -139,7 +142,7 @@ def receiveData(sock, expectedMessageType):
 
 localUsername = "Marcus"
 
-responseMessage = str(input("Please enter a reponse message to respond to any greetings with (optional): "))
+responseMessage = str(input("Please enter a message to respond with (optional): "))
 # Sets a default response message if user chooses to not enter a response message
 # it will use this message if not.
 if (responseMessage == ""):
